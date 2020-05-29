@@ -182,7 +182,6 @@
 </template>
 
 <script>
-  // чтобы не было "магических значений" по критерию Д19, корректное именование для постоянных значений посмотрела в критерии Б7
   var HEIGHT_PROPORTION = 1.337;
 
   var fireballSize = 22;
@@ -190,8 +189,7 @@
   var wizardWidth = 70;
 
   function getFireballSpeed (isLeftWind) {
-  // сделала под критерий Д17
-    return isLeftWind ? 5 : 2;
+    return (!isLeftWind) ? 5 : 2;
   }
 
   function getWizardHeight () {
