@@ -10,11 +10,29 @@ var COLUMN_GAP = 50;
 var TEXT_HEIGHT = 40;
 var BAR_HEIGHT = 150;
 var BAR_WIDTH = 40;
-var YOU_COLOR = 'rgba(255, 0, 0, 1)';
-var DEFAULT_COLOR = '#000';
+var TEXT_STYLE = '16px PT Mono';
+var TEXT_ALIGN = 'hanging';
 
-var getOtherColor = function () {
-  return 'hsl(240,' + Math.floor(Math.random() * 100) + '%, 25%)';
+var Color = {
+  RED: 'rgba(255, 0, 0, 1)',
+  BLACK: '#000',
+  WHITE: '#fff',
+  GREY: 'rgba(0, 0, 0, 0.7)'
+};
+
+var Message = {
+  WON: 'Ура, вы победили!',
+  RESULTS: 'Список результатов:'
+};
+
+var getRandom = function (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+var getRandomColor = function () {
+  return 'hsl(240,' + getRandom(0, 100) + '%, 25%)';
 };
 
 var renderCloud = function (ctx, x, y, color) {
@@ -33,16 +51,22 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
+var getPlayerColor = function (player) {
+  return player === 'Вы'
+    ? Color.RED
+    : getRandomColor();
+};
+
 window.renderStatistics = function (ctx, players, times) {
-  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
+  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, Color.GREY);
+  renderCloud(ctx, CLOUD_X, CLOUD_Y, Color.WHITE);
 
-  ctx.fillStyle = DEFAULT_COLOR;
+  ctx.fillStyle = Color.BLACK;
 
-  ctx.font = '16px PT Mono';
-  ctx.textBaseline = 'hanging';
-  ctx.fillText('Ура вы победили!', CLOUD_X + FONT_GAP, CLOUD_Y + GAP);
-  ctx.fillText('Список результатов:', CLOUD_X + FONT_GAP, CLOUD_Y + GAP + FONT_GAP);
+  ctx.font = TEXT_STYLE;
+  ctx.textBaseline = TEXT_ALIGN;
+  ctx.fillText(Message.WON, CLOUD_X + FONT_GAP, CLOUD_Y + GAP);
+  ctx.fillText(Message.RESULTS, CLOUD_X + FONT_GAP, CLOUD_Y + GAP + FONT_GAP);
 
   var maxTime = getMaxElement(times);
 
@@ -53,16 +77,10 @@ window.renderStatistics = function (ctx, players, times) {
         CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i,
         CLOUD_Y + CLOUD_HEIGHT - FONT_GAP - GAP - TEXT_HEIGHT - (BAR_HEIGHT * times[i]) / maxTime + GAP);
 
-    if (players[i] === 'Вы') {
-      ctx.fillStyle = YOU_COLOR;
-    } else {
-      ctx.fillStyle = getOtherColor();
-    }
-    // не могу понять, почему тернарный оператор работает, но линтер на него ругается?... пришлось делать условие
-    // (players[i] === 'Вы') ? (ctx.fillStyle = YOU_COLOR) : (ctx.fillStyle = getOtherColor());
+    ctx.fillStyle = getPlayerColor(players[i]);
 
     ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + CLOUD_HEIGHT - TEXT_HEIGHT, BAR_WIDTH, (-BAR_HEIGHT * times[i]) / maxTime);
 
-    ctx.fillStyle = DEFAULT_COLOR;
+    ctx.fillStyle = Color.BLACK;
   }
 };
