@@ -57,6 +57,18 @@ var getPlayerColor = function (player) {
     : getRandomColor();
 };
 
+var renderPlayerScore = function (player, time, idx, maxTime, ctx) {
+  ctx.fillText(player, CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * idx, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP - GAP);
+
+  ctx.fillText(Math.round(time),
+      CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * idx,
+      CLOUD_Y + CLOUD_HEIGHT - FONT_GAP - GAP - TEXT_HEIGHT - (BAR_HEIGHT * time) / maxTime + GAP);
+
+  ctx.fillStyle = getPlayerColor(player);
+
+  ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * idx, CLOUD_Y + CLOUD_HEIGHT - TEXT_HEIGHT, BAR_WIDTH, (-BAR_HEIGHT * time) / maxTime);
+};
+
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, Color.GREY);
   renderCloud(ctx, CLOUD_X, CLOUD_Y, Color.WHITE);
@@ -65,22 +77,14 @@ window.renderStatistics = function (ctx, players, times) {
 
   ctx.font = TEXT_STYLE;
   ctx.textBaseline = TEXT_ALIGN;
+
   ctx.fillText(Message.WON, CLOUD_X + FONT_GAP, CLOUD_Y + GAP);
   ctx.fillText(Message.RESULTS, CLOUD_X + FONT_GAP, CLOUD_Y + GAP + FONT_GAP);
 
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < players.length; i++) {
-    ctx.fillText(players[i], CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP - GAP);
-
-    ctx.fillText(Math.round(times[i]),
-        CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i,
-        CLOUD_Y + CLOUD_HEIGHT - FONT_GAP - GAP - TEXT_HEIGHT - (BAR_HEIGHT * times[i]) / maxTime + GAP);
-
-    ctx.fillStyle = getPlayerColor(players[i]);
-
-    ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + CLOUD_HEIGHT - TEXT_HEIGHT, BAR_WIDTH, (-BAR_HEIGHT * times[i]) / maxTime);
-
+    renderPlayerScore(players[i], times[i], i, maxTime, ctx);
     ctx.fillStyle = Color.BLACK;
   }
 };
