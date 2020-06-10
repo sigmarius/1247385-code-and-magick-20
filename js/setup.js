@@ -1,9 +1,9 @@
 'use strict';
 
-var WIZARD_NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var WIZARD_SIRNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var WIZARD_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var WIZARD_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIRST_NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var LAST_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYE_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARD_COUNT = 4;
 
 var userDialog = document.querySelector('.setup');
@@ -20,22 +20,20 @@ var generateRandomIndex = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-var generateOneWizard = function (name, sirname, coatColor, eyesColor) {
-  var wizardName = name[generateRandomIndex(0, name.length)];
-  var wizardSirname = sirname[generateRandomIndex(0, sirname.length)];
-  var wizardCoatColor = coatColor[generateRandomIndex(0, coatColor.length)];
-  var wizardEyesColor = eyesColor[generateRandomIndex(0, eyesColor.length)];
-  return {
-    name: wizardName + ' ' + wizardSirname,
-    coatColor: wizardCoatColor,
-    eyesColor: wizardEyesColor
-  };
+var getRandomElement = function (arr) {
+  return arr[generateRandomIndex(0, arr.length)];
 };
 
 var generateWizards = function () {
   var wizards = [];
+
   for (var i = 0; i < WIZARD_COUNT; i++) {
-    var wizard = generateOneWizard(WIZARD_NAMES, WIZARD_SIRNAMES, WIZARD_COAT_COLORS, WIZARD_EYES_COLORS);
+    var wizard = {
+      name: getRandomElement(FIRST_NAMES) + ' ' + getRandomElement(LAST_NAMES),
+      coatColor: getRandomElement(COAT_COLORS),
+      eyesColor: getRandomElement(EYE_COLORS)
+    };
+
     wizards.push(wizard);
   }
   return wizards;
@@ -51,16 +49,17 @@ var renderOneWizard = function (wizard) {
   return wizardElement;
 };
 
-var renderWizards = function () {
+var renderWizards = function (arrWizards) {
   var fragment = document.createDocumentFragment();
-  var wizards = generateWizards();
 
-  for (var i = 0; i < wizards.length; i++) {
-    fragment.appendChild(renderOneWizard(wizards[i]));
+  for (var i = 0; i < arrWizards.length; i++) {
+    fragment.appendChild(renderOneWizard(arrWizards[i]));
   }
   return fragment;
 };
 
-similarListElements.appendChild(renderWizards());
+var wizards = generateWizards();
+
+similarListElements.appendChild(renderWizards(wizards));
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
