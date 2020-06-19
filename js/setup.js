@@ -61,8 +61,6 @@ var generateWizards = function () {
   return wizards;
 };
 
-var wizards = generateWizards();
-
 var renderOneWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
@@ -82,6 +80,7 @@ var renderWizards = function (arrWizards) {
   return fragment;
 };
 
+var wizards = generateWizards();
 similarListElements.appendChild(renderWizards(wizards));
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
