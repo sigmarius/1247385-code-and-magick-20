@@ -12,10 +12,12 @@
 
   var WIZARD_COUNT = 4;
 
+  var userDialog = document.querySelector('.setup');
+
   var similarWizardTemplate = document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item');
-  var similarListElements = window.common.userDialog.querySelector('.setup-similar-list');
+  var similarListElements = userDialog.querySelector('.setup-similar-list');
 
 
   var generateWizards = function () {
@@ -54,5 +56,5 @@
   var wizards = generateWizards();
 
   similarListElements.appendChild(renderWizards(wizards));
-  window.common.userDialog.querySelector('.setup-similar').classList.remove('hidden');
+  userDialog.querySelector('.setup-similar').classList.remove('hidden');
 })();

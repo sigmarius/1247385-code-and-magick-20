@@ -3,6 +3,8 @@
 // перемещение диалогового окна по экрану - dialog.js
 
 (function () {
+  var userDialog = document.querySelector('.setup');
+
   var moveButton = document.querySelector('.upload');
 
   var moveButtonHandler = function (evt) {
@@ -30,8 +32,8 @@
         y: moveEvt.clientY,
       };
 
-      window.common.userDialog.style.top = (window.common.userDialog.offsetTop - shiftCoords.y) + 'px';
-      window.common.userDialog.style.left = (window.common.userDialog.offsetLeft - shiftCoords.x) + 'px';
+      userDialog.style.top = (userDialog.offsetTop - shiftCoords.y) + 'px';
+      userDialog.style.left = (userDialog.offsetLeft - shiftCoords.x) + 'px';
     };
 
     var moveButtonStopHandler = function (upEvt) {
@@ -56,8 +58,9 @@
   moveButton.addEventListener('mousedown', moveButtonHandler);
 
   window.dialog = {
+    userDialog: document.querySelector('.setup'),
     getDefaultPosition: function () {
-      window.common.userDialog.style = '';
+      window.dialog.userDialog.style = '';
     }
   };
 })();

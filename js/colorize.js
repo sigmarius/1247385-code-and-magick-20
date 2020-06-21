@@ -5,13 +5,15 @@
 (function () {
   var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-  var wizardCoat = window.common.userDialog.querySelector('.setup-wizard .wizard-coat');
-  var coatInput = window.common.userDialog.querySelector('input[name="coat-color"]');
-  var wizardEyes = window.common.userDialog.querySelector('.setup-wizard .wizard-eyes');
-  var eyesInput = window.common.userDialog.querySelector('input[name="eyes-color"]');
-  var fireball = window.common.userDialog.querySelector('.setup-fireball-wrap');
-  var fireballInput = window.common.userDialog.querySelector('input[name="fireball-color"]');
-  var wizardFull = window.common.userDialog.querySelector('.wizard');
+  var userDialog = document.querySelector('.setup');
+
+  var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
+  var coatInput = userDialog.querySelector('input[name="coat-color"]');
+  var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
+  var eyesInput = userDialog.querySelector('input[name="eyes-color"]');
+  var fireball = userDialog.querySelector('.setup-fireball-wrap');
+  var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
+  var wizardFull = userDialog.querySelector('.wizard');
 
   var wizardClickHandler = function (evt) {
     switch (evt.target) {

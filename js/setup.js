@@ -3,19 +3,21 @@
 // открытие и закрытие модального окна настройки волшебника - setup.js
 
 (function () {
+  var userDialog = document.querySelector('.setup');
+
   var setupOpen = document.querySelector('.setup-open');
   var setupIcon = document.querySelector('.setup-open-icon');
-  var setupClose = window.common.userDialog.querySelector('.setup-close');
-  var setupUserInput = window.common.userDialog.querySelector('.setup-user-name');
+  var setupClose = userDialog.querySelector('.setup-close');
+  var setupUserInput = userDialog.querySelector('.setup-user-name');
 
 
   var togglePopupHandler = function (openPopup) {
     if (openPopup) {
-      window.common.userDialog.classList.remove('hidden');
+      userDialog.classList.remove('hidden');
       window.dialog.getDefaultPosition();
       document.addEventListener('keydown', escapeKeyHandler);
     } else {
-      window.common.userDialog.classList.add('hidden');
+      userDialog.classList.add('hidden');
       document.removeEventListener('keydown', escapeKeyHandler);
     }
   };
