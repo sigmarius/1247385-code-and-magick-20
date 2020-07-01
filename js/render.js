@@ -1,8 +1,13 @@
 'use strict';
 
-// генерирует похожих волшебников - generate-similar.js
+// рендер волшебников, полученных с сервера
 
 (function () {
+
+  var WIZARD_COUNT = 4;
+
+  var userDialog = document.querySelector('.setup');
+  var similarListElements = userDialog.querySelector('.setup-similar-list');
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template')
       .content
@@ -12,23 +17,24 @@
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
-  var renderWizards = function (arrWizards) {
+  var successLoadHandler = function (arrWizards) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < arrWizards.length; i++) {
+    for (var i = 0; i < WIZARD_COUNT; i++) {
       fragment.appendChild(renderOneWizard(arrWizards[i]));
     }
-    return fragment;
+
+    similarListElements.appendChild(fragment);
+    userDialog.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-
   window.render = {
-    renderWizards: renderWizards
+    successLoadHandler: successLoadHandler
   };
 })();
