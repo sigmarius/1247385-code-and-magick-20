@@ -23,7 +23,7 @@
     return wizardElement;
   };
 
-  var successLoadHandler = function (arrWizards) {
+  window.renderWizards = function (arrWizards) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < WIZARD_COUNT; i++) {
@@ -34,7 +34,4 @@
     userDialog.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-  window.render = {
-    successLoadHandler: successLoadHandler
-  };
 })();

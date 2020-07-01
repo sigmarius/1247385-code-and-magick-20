@@ -8,6 +8,6 @@
   window.form.setFireballClickHandler();
   window.form.setSumitHandler();
 
-  window.backend.load(window.render.successLoadHandler);
+  window.backend.load(window.renderWizards, window.form.errorHandler);
 
 })();

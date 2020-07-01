@@ -3,56 +3,59 @@
 // загрузка данных с сервера, отправка на сервер
 (function () {
 
+  var RESPONSE = 'json';
   var TIMEOUT = 10000;
+
+  var Url = {
+    LOAD: 'https://javascript.pages.academy/code-and-magick/data',
+    SAVE: 'https://javascript.pages.academy/code-and-magick'
+  };
+
+  var Method = {
+    GET: 'GET',
+    POST: 'POST'
+  };
+
   var StatusCode = {
     OK: 200
   };
 
-  var load = function (onLoad, onError) { // загрузка данных с сервера
-    var URL = 'https://javascript.pages.academy/code-and-magick/data';
-
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onLoad(xhr.response);
+  var loadHandler = function (request, successHandler, failHandler) {
+    request.addEventListener('load', function () {
+      if (request.status === StatusCode.OK) {
+        successHandler(request.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        failHandler('Статус ответа: ' + request.status + ' ' + request.statusText);
       }
     });
-
-    xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+    request.addEventListener('error', function () {
+      failHandler('Произошла ошибка соединения');
     });
-
-    xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    request.addEventListener('timeout', function () {
+      failHandler('Запрос не успел выполниться за ' + request.timeout + 'мс');
     });
+    request.timeout = TIMEOUT;
+  };
 
-    xhr.timeout = TIMEOUT;
+  var setRequest = function (onLoad, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = RESPONSE;
+    loadHandler(xhr, onLoad, onError);
+    return xhr;
+  };
 
-    xhr.open('GET', URL);
+  var load = function (onLoad, onError) { // загрузка данных с сервера
+    var xhr = setRequest(onLoad, onError);
+    xhr.open(Method.GET, Url.LOAD);
     xhr.send();
   };
 
   var save = function (data, onLoad, onError) { // отправка данных на сервер
-    var URL = 'https://javascript.pages.academy/code-and-magick';
-
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onLoad(xhr.response);
-      } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-
-    xhr.open('POST', URL);
+    var xhr = setRequest(onLoad, onError);
+    xhr.open(Method.POST, Url.SAVE);
     xhr.send(data);
   };
+
 
   window.backend = {
     load: load,
