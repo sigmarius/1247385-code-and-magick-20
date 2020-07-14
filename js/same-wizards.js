@@ -27,7 +27,7 @@
   };
 
   window.updateWizards = function (arrWizards) {
-    window.renderWizards(arrWizards.sort(function (left, right) {
+    window.renderWizards(arrWizards.slice().sort(function (left, right) {
       var rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
         rankDiff = namesSort(left.name, right.name);

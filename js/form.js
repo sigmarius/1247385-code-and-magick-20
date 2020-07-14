@@ -3,6 +3,7 @@
 // настройка цветов главного волшебника, Отправка формы на сервер
 
 (function () {
+
   var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
   var userDialog = document.querySelector('.setup');
@@ -20,21 +21,27 @@
   var coatColor = window.common.COAT_COLORS[0]; // выбранный цвет куртки, [0] для 1го прохода
   var eyesColor = window.common.EYE_COLORS[0]; // выбранный цвет глаз, [0] для 1го прохода
 
+  var colorChangeHandler = function (element, input, color, arrColor) {
+    color = window.common.getRandomElement(arrColor);
+    element.style.fill = color;
+    input.value = color;
+
+    var updateColor = function () {
+      window.updateWizards(wizards);
+    };
+    window.debounce(updateColor);
+    return color;
+  };
+
   var setWizardChange = function (evt) {
     switch (evt.target) {
       case wizardCoat :
-        coatColor = window.common.getRandomElement(window.common.COAT_COLORS);
-        wizardCoat.style.fill = coatColor;
-        coatInput.value = coatColor;
-        window.form.coatColor = coatColor;
-        window.updateWizards(wizards);
+        window.form.coatColor = colorChangeHandler(
+            wizardCoat, coatInput, coatColor, window.common.COAT_COLORS);
         break;
       case wizardEyes :
-        eyesColor = window.common.getRandomElement(window.common.EYE_COLORS);
-        wizardEyes.style.fill = eyesColor;
-        eyesInput.value = eyesColor;
-        window.form.eyesColor = eyesColor;
-        window.updateWizards(wizards);
+        window.form.eyesColor = colorChangeHandler(
+            wizardEyes, eyesInput, eyesColor, window.common.EYE_COLORS);
         break;
     }
   };
