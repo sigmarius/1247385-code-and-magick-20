@@ -24,9 +24,14 @@
   };
 
   window.renderWizards = function (arrWizards) {
+    var wizardNumbers = arrWizards.length > WIZARD_COUNT ?
+      WIZARD_COUNT : arrWizards.length;
+
+    similarListElements.innerHTML = '';
+
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < WIZARD_COUNT; i++) {
+    for (var i = 0; i < wizardNumbers; i++) {
       fragment.appendChild(renderOneWizard(arrWizards[i]));
     }
 

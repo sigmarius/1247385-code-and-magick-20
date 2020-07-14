@@ -16,15 +16,25 @@
   var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
   var wizardFull = userDialog.querySelector('.wizard');
 
+  var wizards = []; // массив волшебников с сервера
+  var coatColor = window.common.COAT_COLORS[0]; // выбранный цвет куртки, [0] для 1го прохода
+  var eyesColor = window.common.EYE_COLORS[0]; // выбранный цвет глаз, [0] для 1го прохода
+
   var setWizardChange = function (evt) {
     switch (evt.target) {
       case wizardCoat :
-        wizardCoat.style.fill = window.common.getRandomElement(window.common.COAT_COLORS);
-        coatInput.value = wizardCoat.style.fill;
+        coatColor = window.common.getRandomElement(window.common.COAT_COLORS);
+        wizardCoat.style.fill = coatColor;
+        coatInput.value = coatColor;
+        window.form.coatColor = coatColor;
+        window.updateWizards(wizards);
         break;
       case wizardEyes :
-        wizardEyes.style.fill = window.common.getRandomElement(window.common.EYE_COLORS);
-        eyesInput.value = wizardEyes.style.fill;
+        eyesColor = window.common.getRandomElement(window.common.EYE_COLORS);
+        wizardEyes.style.fill = eyesColor;
+        eyesInput.value = eyesColor;
+        window.form.eyesColor = eyesColor;
+        window.updateWizards(wizards);
         break;
     }
   };
@@ -39,17 +49,14 @@
     userDialog.classList.add('hidden');
   };
 
-  var setFormSubmit = function (evt) {
-    window.backend.save(new FormData(form), successSaveHandler, errorHandler);
-    evt.preventDefault();
+  var successLoadHandler = function (data) {
+    wizards = data;
+    window.updateWizards(wizards);
   };
 
-  var errorHandler = function (errorMessage) {
-    var message = document.createElement('div');
-    message.style = 'position: absolute; top: 0; left: 0; right: 0; z-index: 10; margin: 0 auto; padding: 50px; font-size: 2em; text-align: center; background-color: rgba(255, 0, 0, 0.9);';
-
-    message.textContent = errorMessage;
-    document.body.appendChild(message);
+  var setFormSubmit = function (evt) {
+    window.backend.save(new FormData(form), successSaveHandler, window.message.errorHandler);
+    evt.preventDefault();
   };
 
   var setWizardClickHandler = function () {
@@ -60,15 +67,17 @@
     fireball.addEventListener('click', setFireballChange);
   };
 
-  var setSumitHandler = function () {
+  var setSubmitHandler = function () {
     form.addEventListener('submit', setFormSubmit);
   };
 
   window.form = {
     setWizardClickHandler: setWizardClickHandler,
     setFireballClickHandler: setFireballClickHandler,
-    setSumitHandler: setSumitHandler,
-    errorHandler: errorHandler
+    setSubmitHandler: setSubmitHandler,
+    successLoadHandler: successLoadHandler,
+    coatColor: coatColor,
+    eyesColor: eyesColor
   };
 
 })();

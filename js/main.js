@@ -6,8 +6,8 @@
 
   window.form.setWizardClickHandler();
   window.form.setFireballClickHandler();
-  window.form.setSumitHandler();
+  window.form.setSubmitHandler();
 
-  window.backend.load(window.renderWizards, window.form.errorHandler);
+  window.backend.load(window.form.successLoadHandler, window.message.errorHandler);
 
 })();
