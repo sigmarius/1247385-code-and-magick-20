@@ -3,7 +3,7 @@
 // загрузка данных с сервера, отправка на сервер
 (function () {
 
-  var RESPONSE = 'json';
+  var RESPONSE_TYPE = 'json';
   var TIMEOUT = 10000;
 
   var Url = {
@@ -20,7 +20,7 @@
     OK: 200
   };
 
-  var loadHandler = function (request, successHandler, failHandler) {
+  var addListeners = function (request, successHandler, failHandler) {
     request.addEventListener('load', function () {
       if (request.status === StatusCode.OK) {
         successHandler(request.response);
@@ -37,21 +37,21 @@
     request.timeout = TIMEOUT;
   };
 
-  var setRequest = function (onLoad, onError) {
+  var createRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    xhr.responseType = RESPONSE;
-    loadHandler(xhr, onLoad, onError);
+    xhr.responseType = RESPONSE_TYPE;
+    addListeners(xhr, onLoad, onError);
     return xhr;
   };
 
   var load = function (onLoad, onError) { // загрузка данных с сервера
-    var xhr = setRequest(onLoad, onError);
+    var xhr = createRequest(onLoad, onError);
     xhr.open(Method.GET, Url.LOAD);
     xhr.send();
   };
 
   var save = function (data, onLoad, onError) { // отправка данных на сервер
-    var xhr = setRequest(onLoad, onError);
+    var xhr = createRequest(onLoad, onError);
     xhr.open(Method.POST, Url.SAVE);
     xhr.send(data);
   };

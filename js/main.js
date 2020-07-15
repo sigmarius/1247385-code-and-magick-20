@@ -4,10 +4,14 @@
 
 (function () {
 
-  window.form.setWizardClickHandler();
-  window.form.setFireballClickHandler();
-  window.form.setSumitHandler();
+  var successLoadHandler = function (data) {
+    // массив волшебников с сервера - window.wizards
+    window.wizards = data;
+    window.updateWizards(window.wizards);
+  };
 
-  window.backend.load(window.renderWizards, window.form.errorHandler);
+  window.form.setSubmitHandler();
+
+  window.backend.load(successLoadHandler, window.message.showError);
 
 })();
