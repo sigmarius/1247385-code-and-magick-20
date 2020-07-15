@@ -16,7 +16,7 @@
     return rank;
   };
 
-  var namesSort = function (left, right) {
+  var compareNames = function (left, right) {
     if (left > right) {
       return 1;
     } else if (left < right) {
@@ -26,14 +26,16 @@
     }
   };
 
+  var compareWizards = function (left, right) {
+    var rankDiff = getRank(right) - getRank(left);
+    if (rankDiff === 0) {
+      rankDiff = compareNames(left.name, right.name);
+    }
+    return rankDiff;
+  };
+
   window.updateWizards = function (arrWizards) {
-    window.renderWizards(arrWizards.slice().sort(function (left, right) {
-      var rankDiff = getRank(right) - getRank(left);
-      if (rankDiff === 0) {
-        rankDiff = namesSort(left.name, right.name);
-      }
-      return rankDiff;
-    }));
+    window.renderWizards(arrWizards.slice().sort(compareWizards));
   };
 
 
