@@ -14,4 +14,6 @@
 
   window.backend.load(successLoadHandler, window.message.showError);
 
+  window.setAvatarChangeHandler();
+
 })();
